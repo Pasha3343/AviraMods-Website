@@ -1,0 +1,64 @@
+{
+  "entities": {
+    "config": {
+      "title": "Application Config",
+      "description": "Global configuration for the application",
+      "type": "object",
+      "properties": {
+        "discordLink": {
+          "type": "string",
+          "description": "The current Discord server invite link"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the config was last updated"
+        }
+      },
+      "required": ["discordLink"]
+    },
+    "download": {
+      "title": "Download Version",
+      "description": "A downloadable version of the software",
+      "type": "object",
+      "properties": {
+        "version": {
+          "type": "string",
+          "description": "Version number (e.g. v1.2.0)"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the release (e.g. April 2026)"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of changes"
+        },
+        "downloadUrl": {
+          "type": "string",
+          "description": "Link to the file or the file itself"
+        },
+        "isCurrent": {
+          "type": "boolean",
+          "description": "Whether this is the latest version"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this version was added"
+        }
+      },
+      "required": ["version", "title", "description", "downloadUrl"]
+    }
+  },
+  "firestore": {
+    "/config/global": {
+      "schema": "config",
+      "description": "Global application settings"
+    },
+    "/downloads/{downloadId}": {
+      "schema": "download",
+      "description": "List of available downloads"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+// ===============================================================
+// Assumed Data Model
+// ===============================================================
+//
+// Collection: config
+// Document ID: global
+// Fields:
+//   - discordLink: string (required)
+//   - updatedAt: timestamp (optional)
+//
+// Collection: downloads
+// Document ID: auto-generated
+// Fields:
+//   - version: string (required)
+//   - title: string (required)
+//   - description: string (required)
+//   - downloadUrl: string (required)
+//   - isCurrent: bool (optional)
+//   - createdAt: timestamp (required)
+//
+// ===============================================================
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        request.auth.token.email == "xxgammeryt@gmail.com";
+    }
+
+    // Config Rules
+    match /config/global {
+      allow read: if true; // Publicly readable
+      allow write: if isAdmin(); // Only admin can update
+    }
+
+    // Downloads Rules
+    match /downloads/{downloadId} {
+      allow read: if true; // Publicly readable
+      allow write: if isAdmin(); // Only admin can update
+    }
+  }
+}
